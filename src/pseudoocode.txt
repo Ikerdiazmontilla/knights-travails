@@ -1,0 +1,19 @@
+const searchFastest = function getPath(start, end, queue = [], moves = [[start[0], start[1]]]) {
+  let finalMove = false;
+  array[start[0]][start[1]].forEach(move => {
+    if (move[0] === end[0] && move[1] === end[1]) {
+      finalMove = true;
+    }
+    if (move[0] === start[0] && move[1] === start[1]) {
+      console.log('Skip this move');
+    } else {
+      const movesHistory = [...moves, move];
+      queue.push(movesHistory, move);
+    }
+  });
+  if (finalMove === true) {
+    return moves;
+  }
+  const [movesHistory, nextMove] = queue.shift();
+  return searchFastest(nextMove, end, queue, movesHistory);
+};

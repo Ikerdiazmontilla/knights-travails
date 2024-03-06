@@ -11,11 +11,6 @@ const array = [
   [[], [], [], [], [], [], [], []],
 ];
 
-// const newArray = new Array(8, []);
-
-// newArray.forEach(slot => slot.push(new Array(8), []));
-// console.log(newArray);
-
 const combinations = [
   [2, 1],
   [2, -1],
@@ -40,22 +35,25 @@ for (let x = 0; x < 8; x += 1) {
   }
 }
 
-const searchFastest = function getPath(start, end, queue = [], counter = 1) {
+const searchFastest = function getPath(start, end, queue = [], moves = [[start[0], start[1]]]) {
   let finalMove = false;
   array[start[0]][start[1]].forEach(move => {
     if (move[0] === end[0] && move[1] === end[1]) {
       finalMove = true;
+      moves.push(move);
     }
     if (move[0] === start[0] && move[1] === start[1]) {
-      console.log('Yes');
+      console.log('Skip this move');
     } else {
-      queue.push(move);
+      const historyMoves = [...moves, move];
+      queue.push([historyMoves, move]);
     }
   });
   if (finalMove === true) {
-    return counter;
+    return moves;
   }
-  return searchFastest(queue.shift(), end, queue, counter + 1);
+  const [historyMoves, nextMove] = queue.shift();
+  return searchFastest(nextMove, end, queue, historyMoves);
 };
 
-console.log(searchFastest([0, 3], [1, 2]));
+console.log(searchFastest([0, 0], [7, 7]));
